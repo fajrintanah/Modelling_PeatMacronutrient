@@ -1425,19 +1425,19 @@ head(x_N_train) #just for easily copy the column heads
 		[6,] 150  1    20      0       1        0        0        1          1            0
 
 
-Cub_ICE_N_DC <- ICE_N(N_Cub, pred.var = "DC")
-Cub_ICE_N_DT <- ICE_N(N_Cub, pred.var = "DT")
-Cub_ICE_N_Depth <- ICE_N(N_Cub, pred.var = "Depth")
-Cub_ICE_N_Age1 <-ICE_N(N_Cub, pred.var = "Age_<6")
-Cub_ICE_N_Age2 <-ICE_N(N_Cub, pred.var = "Age_>15")
-Cub_ICE_N_Age3 <-ICE_N(N_Cub, pred.var = "Age_6-15")
-Cub_ICE_N_Thick1 <-ICE_N(N_Cub, pred.var = "Thick_<3")
-Cub_ICE_N_Thick2 <-ICE_N(N_Cub, pred.var = "Thick_>3")
-Cub_ICE_N_Season1 <-ICE_N(N_Cub, pred.var = "Season_Dry")
-Cub_ICE_N_Season2 <-ICE_N(N_Cub,  pred.var = "Season_Rainy")
+Cub_ICE_N_DC <- ICE_N(N_Cub, pred.var = "DC")+ ylab("Prob. Pred. N")+ xlab("DC (m)")
+Cub_ICE_N_DT <- ICE_N(N_Cub, pred.var = "DT") +theme(axis.title.y=element_blank())+ xlab("DT (m)")
+Cub_ICE_N_Depth <- ICE_N(N_Cub, pred.var = "Depth")+theme(axis.title.y=element_blank())+ xlab("Depth (cm)")
+Cub_ICE_N_Age1 <-ICE_N(N_Cub, pred.var = "Age_<6")+theme(axis.title.y=element_blank())+ xlab("Age: <6")
+Cub_ICE_N_Age2 <-ICE_N(N_Cub, pred.var = "Age_>15")+theme(axis.title.y=element_blank())+ xlab("Age: >15")
+Cub_ICE_N_Age3 <-ICE_N(N_Cub, pred.var = "Age_6-15")+ ylab("Prob. Pred. N")+ xlab("Age: 6-15")
+Cub_ICE_N_Thick1 <-ICE_N(N_Cub, pred.var = "Thick_<3")+theme(axis.title.y=element_blank())+ xlab("Thick: <3")
+Cub_ICE_N_Thick2 <-ICE_N(N_Cub, pred.var = "Thick_>3")+theme(axis.title.y=element_blank())+ xlab("Thick: >3")
+Cub_ICE_N_Season1 <-ICE_N(N_Cub, pred.var = "Season_Dry")+theme(axis.title.y=element_blank())+ xlab("Season:Dry")
+Cub_ICE_N_Season2 <-ICE_N(N_Cub,  pred.var = "Season_Rainy")+theme(axis.title.y=element_blank())+ xlab("Season:Rainy")
 
-Cub_ICE_N_DC+Cub_ICE_N_DC+Cub_ICE_N_Depth+Cub_ICE_N_Age1+Cub_ICE_N_Age2+Cub_ICE_N_Age3+
-   Cub_ICE_N_Thick1+Cub_ICE_N_Thick2+Cub_ICE_N_Season1+Cub_ICE_N_Season2
+Cub_ICE_N_DC+Cub_ICE_N_DT+Cub_ICE_N_Depth+Cub_ICE_N_Age1+Cub_ICE_N_Age2+Cub_ICE_N_Age3+
+   Cub_ICE_N_Thick1+Cub_ICE_N_Thick2+Cub_ICE_N_Season1+Cub_ICE_N_Season2+ plot_layout(nrow=2)
 
 
 
