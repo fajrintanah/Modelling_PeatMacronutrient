@@ -1468,4 +1468,11 @@ sv_GBM_N <- shapviz_N(GBM_N_final)
 sv_XGB_N <- shapviz_N(xgb_N_final)
 
 		 
+## shap-based plotting
+
+## waterfall plot
+## beeswarm Plot
+## dependence plot
+## mean-VI plot
+		 
 		 
