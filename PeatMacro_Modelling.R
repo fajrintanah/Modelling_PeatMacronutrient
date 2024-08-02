@@ -1440,6 +1440,32 @@ Cub_ICE_N_DC+Cub_ICE_N_DT+Cub_ICE_N_Depth+Cub_ICE_N_Age1+Cub_ICE_N_Age2+Cub_ICE_
    Cub_ICE_N_Thick1+Cub_ICE_N_Thick2+Cub_ICE_N_Season1+Cub_ICE_N_Season2+ plot_layout(nrow=2)
 
 
+# using Game Theory - Shapley Value using SHAP approach
+
+## make custom wrapper function by combining fastshap and shapviz packages
+
+shapviz_N <- function(model, ...) {
+  shapviz( 			# convert the fastshap object to more powerful and fast shapviz object
+    fastshap::explain( 		# perform SHAP approach using fastshap package
+      model, 
+      X = x_N_train,
+      nsim = 1000, 			# set Monte Carlo Simulation to 1000
+      pred_wrapper = predict,
+      shap_only = FALSE,
+      adjust = TRUE,
+      ...
+    )
+  )
+}
+
+
+sv_LM_N <- shapviz_N(tuned_lm_N)
+sv_LogGLM_N <- shapviz_N(logGLM_N)
+sv_Cubist_N <- shapviz_N(N_Cub)
+sv_TR_N <- shapviz_N(TR_N)
+sv_RF_N <- shapviz_N(RF_N4)
+sv_GBM_N <- shapviz_N(GBM_N_final)
+sv_XGB_N <- shapviz_N(xgb_N_final)
 
 		 
 		 
