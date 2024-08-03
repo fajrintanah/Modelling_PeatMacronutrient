@@ -1289,6 +1289,73 @@ merged_all_model_N
 		8 0.5011779 0.1498288 0.1154051 -0.0046032801    XGB
 
 
+	
+# My beloved wife, I don't like the repetitive codes like above. it is soo boring 
+# Let's check if these repetitive processes can be automatically done by a wrapper function 
+
+# First Create a list of trained models
+models <- list(
+  MLR = tuned_lm_N,
+  LOG_GLM = logGLM_N,
+  MARS = mars_N,
+  CUBIST = N_Cub,
+  TR = TR_N,
+  RF = RF_N4,
+  GBM = GBM_N_final,
+  XGB = xgb_N_final
+)
+
+#  Make wrapper function for predicting each model inside the list. 
+#  You can modified it to other nutrients
+predict_N <- function(models) {
+  predictions <- list()
+  for (model_name in names(models)) {
+    model <- models[[model_name]]
+    if (model_name == "XGB") {
+      predictions[[model_name]] <- predict(model, x_N_test)  		# predicting by XGB needs to be separated. requires only predictors (x columns)
+    } else {
+      predictions[[model_name]] <- predict(model, newdata = testSet_N) 	# predicting by all other models are similar. requires predictors+N (x+y columns)
+    }								      	# all prediction using validation/testing dataset (30% data)
+  }
+  return(predictions)
+}
+
+# Predict all models at once using the new function
+predictions <- predict_N(models)
+
+# Takes prediction's dataframe to be evaluated simultaneously: this is the tough ones
+evaluate_and_bind <- function(predictions, y_test) { # take the predicted y and observed y, 
+  models <- names(predictions)
+  eval_metrics <- map(models, function(model) {   
+    pred <- predictions[[model]]
+    data.frame(					# evaluate the model performance using validation/testing data (30% of dataset)
+      Rsq = R2(pred, y_test),
+      RMSE = RMSE(pred, y_test),
+      MAE = MAE(pred, y_test),
+      BIAS = Metrics::bias(y_test, pred),
+      Model = model
+    ) %>% 
+      rename_with(~ ifelse(. == "y", "Rsq", .)) # change y to Rsq for MARS model' performance
+  }) %>% 
+  bind_rows() 					#change the vector containing list to a single dataframe
+}
+
+# Finally, after all trials and errors
+eval_results <- evaluate_and_bind(predictions, y_N_test)
+
+			Rsq      RMSE       MAE          BIAS   Model
+		1 0.2727537 0.1807582 0.1415677  0.0005179089     MLR
+		2 0.2781068 0.1800702 0.1406175  0.0003533802 LOG_GLM
+		3 0.3840015 0.1675690 0.1263361  0.0071198200    MARS
+		4 0.5139022 0.1496621 0.1120691  0.0036524161  CUBIST
+		5 0.4707519 0.1565284 0.1172435  0.0052168493      TR
+		6 0.4991785 0.1512586 0.1139574  0.0034435387      RF
+		7 0.4788841 0.1529305 0.1179545  0.0044659966     GBM
+		8 0.5011779 0.1498288 0.1154051 -0.0046032801     XGB  
+
+
+
+
 
 # ----------------------------- MODEL EXPLANATION AND INTERPRETABILITY ---------------------------------------
 
@@ -1512,7 +1579,7 @@ bee_RF_N <- bee_N(sv_RF_N, color_bar_title=NULL)+ theme_bw()+ ggtitle("RF") +
 bee_GBM_N <- bee_N(sv_GBM_N)+ theme_bw()+ ggtitle("GBM")+
 							theme(axis.text = element_text(size = 13 ),
 							axis.title = element_text(size = 13),
-							axis.text.y=element_blank(),legend.position = "none")
+							legend.position = "none")
 							
 bee_XGB_N <- bee_N(sv_XGB_N)+ theme_bw()+ ggtitle("XGB")+
 							theme(axis.text = element_text(size = 13 ),
@@ -1521,6 +1588,8 @@ bee_XGB_N <- bee_N(sv_XGB_N)+ theme_bw()+ ggtitle("XGB")+
 bee_LM_N+bee_LogGLM_N+bee_Cubist_N+bee_TR_N +bee_RF_N+bee_GBM_N+bee_XGB_N+plot_layout(ncol=3)
 		 
 ## dependence plot
+
+		 
 ## mean-VI plot
 		 
 		 
