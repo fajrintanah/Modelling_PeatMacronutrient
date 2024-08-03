@@ -1471,7 +1471,55 @@ sv_XGB_N <- shapviz_N(xgb_N_final)
 ## shap-based plotting
 
 ## waterfall plot
+
 ## beeswarm Plot
+## make wrapper function
+
+bee_N <- function(model, color_bar_title, ...) {
+  shapviz::sv_importance(
+    model, 
+    kind = "beeswarm", 
+    show_numbers = FALSE, 
+	...
+  ) 
+}
+
+
+bee_LM_N <- bee_N(sv_LM_N, color_bar_title = NULL)+theme_bw()+ ggtitle("LM")+
+							theme(axis.text = element_text(size = 13),
+							axis.title = element_text(size = 13 ),
+							axis.title.x=element_blank(),legend.position = "none")
+							
+bee_LogGLM_N <- bee_N(sv_LogGLM_N)+	theme_bw()+ ggtitle("LogGLM")+
+							theme(axis.text = element_text(size = 13 ),
+							axis.title = element_text(size = 13 ),
+							axis.title.x=element_blank(),legend.position = "none")
+							
+bee_Cubist_N <- bee_N(sv_Cubist_N)+	theme_bw()+ ggtitle("Cubist") +
+							theme(axis.text = element_text(size = 13 ),
+							axis.title.x=element_blank())						
+
+
+bee_TR_N <- bee_N(sv_TR_N, color_bar_title=NULL)+ theme_bw()+ ggtitle("RF") +
+							theme(axis.text = element_text(size = 13 ),
+							axis.title = element_text(size = 13 ),
+							axis.title.x=element_blank(),legend.position = "none")
+
+bee_RF_N <- bee_N(sv_RF_N, color_bar_title=NULL)+ theme_bw()+ ggtitle("RF") +
+							theme(axis.text = element_text(size = 13 ),
+							axis.title = element_text(size = 13),legend.position = "none")
+							
+bee_GBM_N <- bee_N(sv_GBM_N)+ theme_bw()+ ggtitle("GBM")+
+							theme(axis.text = element_text(size = 13 ),
+							axis.title = element_text(size = 13),
+							axis.text.y=element_blank(),legend.position = "none")
+							
+bee_XGB_N <- bee_N(sv_XGB_N)+ theme_bw()+ ggtitle("XGB")+
+							theme(axis.text = element_text(size = 13 ),
+							axis.title = element_text(size = 13 ),legend.position = "none")
+
+bee_LM_N+bee_LogGLM_N+bee_Cubist_N+bee_TR_N +bee_RF_N+bee_GBM_N+bee_XGB_N+plot_layout(ncol=3)
+		 
 ## dependence plot
 ## mean-VI plot
 		 
