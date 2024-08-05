@@ -88,7 +88,7 @@ str(EL_Data_P2)
 # Set the seed for reproducibility
 set.seed(123)	
 					
-# Split the data into training and validation sets (I prefer to use dplyr/tidyverse style, my beloved wife )
+# Split the data into training and validation sets (I prefer to use dplyr/tidyverse style)
 # Load the rsample package
 library(rsample)
 split_P <- initial_split(EL_Data_P2, prop = 0.7)
@@ -619,8 +619,7 @@ plot_res_RF
 
 # Gradient Boosting Machine
 
-## notes for my beloved wife: I use 5-fold repeatedcv  for relieving computational burden. Feel sleepy and lonely without you tonight [-_-] wkwkwkwk. kangen
-## you can wait forever for 10-fold repeatedcv wkwkwkw, I choose not. kangen [''_'']
+## notes: I use 5-fold repeatedcv  for relieving computational burden.
 
 # first step : fixing minobsinnode
 grid_gbm_P <-expand.grid(n.trees = seq(50, 1000, by = 50),
@@ -645,17 +644,17 @@ GBM_P1$bestTune
 		140    1000                 5      0.01              3
 
 #evaluate
-ggplot(GBM_P1) ## my beloved wife, please analyze the graphs carefully. I found these:
+ggplot(GBM_P1) ## please analyze the graphs carefully. I found these:
 
 # RMSE is lower and continued to stabilize at low shrinkage (0.01). 
 # RMSE is lower at high interaction.depth (5)
 # seemingly no difference in varying n.minobsinnode at interaction.depth = 5
-# but if we look more closely, lowest RMSE is obtained at n.minobsinnode = 3 and ntrees = 1000 with slightly declining trend. 
-# the opposite patterns are observed at higher n.minobsinnode
+# but if we look more closely, the lowest RMSE is obtained at n.minobsinnode = 3 and ntrees = 1000 with a slightly declining trend. 
+# The opposite patterns are observed at higher n.minobsinnode
 
-# conclusion: we develop model parameterisation with: low shrinkage (0.01), high interaction.depth (5), low n.minobsinnode (3), more ntrees (>850)
+# conclusion: we develop model parameterisation with: low shrinkage (0.01), and high interaction.depth (5), low n.minobsinnode (3), more ntrees (>850)
 # we also try lowering the learning rate = shrinkage <0.01. suggested by Bradley https://bradleyboehmke.github.io/HOML/gbm.html
-# tune more of other parameters, i.e., n.minobsinnode < 3 or interaction.depth >5 are never suggested in literatures. I never read it
+# tune more of other parameters, i.e., n.minobsinnode < 3 or interaction.depth >5 is never suggested in literature. I never read it
 
 # second step : try adding more trees. test if it can lower RMSE 
 grid_gbm_P2 <-expand.grid(n.trees = seq(500, 5000, by = 500),
