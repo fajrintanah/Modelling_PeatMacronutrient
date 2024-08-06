@@ -1424,7 +1424,7 @@ vi_N_XGB
 
 vi_N_Cub + vi_N_RF + vi_N_XGB
 
-## since all defined parameters in vip() are similar, I ask our good (and smart) friend to cast a wrapper function.
+## Since all defined parameters in vip() are similar, I ask our good (and smart) friend to cast a wrapper function.
 ## it is easy and simplified when we have a pre-determined function. such a neat code, yeay, we nailed it !!!
 
 vip_N <- function(model, ...) {
@@ -1462,7 +1462,7 @@ vi_N_Cub + vi_N_RF + vi_N_XGB
 
 # Using Marginal Effects through Partial dependence plots (PDP) and individual conditional expectation (ICE) plots
 
-## I try to cast wrapper function myself. without his help [*_-]
+## I try to cast the wrapper function myself. without his help [*_-]
 ### *fails miserably, poor man, I ask for his help [--_--]
 
 ICE_N <- function(model, pred.var, ...) {
@@ -1509,7 +1509,7 @@ Cub_ICE_N_DC+Cub_ICE_N_DT+Cub_ICE_N_Depth+Cub_ICE_N_Age1+Cub_ICE_N_Age2+Cub_ICE_
 
 # using Game Theory - Shapley Value using SHAP approach
 
-## make custom wrapper function by combining fastshap and shapviz packages
+## make a custom wrapper function by combining fastshap and shapviz packages
 
 shapviz_N <- function(model, ...) {
   shapviz( 			# convert the fastshap object to more powerful and fast shapviz object
@@ -1565,7 +1565,6 @@ bee_LogGLM_N <- bee_N(sv_LogGLM_N)+	theme_bw()+ ggtitle("LogGLM")+
 bee_Cubist_N <- bee_N(sv_Cubist_N)+	theme_bw()+ ggtitle("Cubist") +
 							theme(axis.text = element_text(size = 13 ),
 							axis.title.x=element_blank())						
-
 
 bee_TR_N <- bee_N(sv_TR_N, color_bar_title=NULL)+ theme_bw()+ ggtitle("RF") +
 							theme(axis.text = element_text(size = 13 ),
