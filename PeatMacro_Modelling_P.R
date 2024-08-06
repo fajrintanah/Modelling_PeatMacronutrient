@@ -259,6 +259,53 @@ summary(mars_P)
 			Number of terms at each degree of interaction: 1 3 5 2 1
 			GCV 0.03287655    RSS 16.94531    GRSq 0.3818494    RSq 0.4400567
 
+#MODEL 2 --- FIX
+hyper_grid_mars_P2 <- expand.grid(
+  degree = 3:5, 
+  nprune = seq(2, 50, by = 2) %>% floor() #grid 2 - 50 per 2
+  )
+
+set.seed(42)
+
+# cross validated model
+mars_P2 <- train(
+  x = x_P_train,
+  y = y_P_train,
+  method = "earth",
+  metric = "RMSE",
+  trControl = trainControl(method = "repeatedcv", number = 10, repeats=10),
+  tuneGrid = hyper_grid_mars_P2)
+  
+# best model
+mars_P2$bestTune
+		   nprune degree
+		32     14      4		
+
+ggplot(mars_P2)
+
+summary(mars_P2)
+		Call: earth(x=matrix[571,10], y=c(0.2815,0.2547...),
+					keepxy=TRUE, degree=4, nprune=14)
+
+													 coefficients
+		(Intercept)                                   0.281951244
+		Age_>15                                      -0.216614502
+		Thick_>3                                     -0.156846272
+		Season_Rainy                                  0.111832174
+		Age_<6 * Thick_>3                             0.092040119
+		Age_>15 * Thick_>3                            0.271262610
+		h(75-DC) * Age_>15                           -0.001449439
+		h(3-DT) * Season_Rainy                        0.055150379
+		h(DT-3) * Season_Rainy                        0.115691362
+		h(DT-3) * Age_>15 * Season_Rainy              0.293846136
+		h(75-DC) * h(3-DT) * Season_Rainy            -0.002408410
+		h(75-DC) * h(3-DT) * Thick_<3 * Season_Rainy  0.002347745
+
+		Selected 12 of 14 terms, and 7 of 10 predictors (nprune=14)
+		Termination condition: Reached nk 21
+		Importance: Season_Rainy, DT, Age_>15, Thick_>3, DC, ...
+		Number of terms at each degree of interaction: 1 3 5 2 1
+		GCV 0.03287655    RSS 16.94531    GRSq 0.3818494    RSq 0.4400567
 
 ## ----------- Cubist ------------------
 
@@ -306,7 +353,25 @@ summary(P_Cub)
 
 ggplot(P_Cub)
 
+#MODEL2
+grid_P_cub2 <- expand.grid(committees = c(50:100, by= 10), neighbors = c(4:7, by=1))
 
+set.seed(42)
+P_Cub2 <- train(
+  x = x_P_train,
+  y = y_P_train,
+  method = "cubist",
+  metric = "RMSE",
+  tuneGrid = grid_P_cub2,
+  trControl = trainControl(method = "repeatedcv", number = 10, repeats=10)
+  )
+
+P_Cub2$bestTune
+	 
+
+ggplot(P_Cub2)		 
+		 
+summary(P_Cub2)
 ## ------------------Tree Regression ---------------
 
 
